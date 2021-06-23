@@ -1,3 +1,7 @@
+This project was made using React as a frontend framework, Readux as a global state management and GraphQL server as a middleware to fetch data from Open Weather API.
+
+## 
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
 ## Available Scripts
