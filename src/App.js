@@ -1,57 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { useLayoutEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { fetchWeather } from './features/weather/weatherSlice';
 
-function App() {
+// components
+import Weather from './components/Weather';
+
+/**
+ * Obs: As I am not familiar with redux, I would use
+ * Context to manage that global state.
+ */
+
+const App = () => {
+  const dispatch = useDispatch();
+
+  useLayoutEffect(() => {
+    /**
+     * I decided to use IP address lookup to get the city of the user location instead of using the geolocation api
+     * The decision was made due to our graphQL api only cover requests by id and city names.
+     * Due to that, if I used the geolocation api I would get the long and lat and then
+     * do a reverse geocoding using google maps (which would require an api key) to get the city name.
+     * 
+     * Another option would be to have graphQL api to accept lng and lat as parameters because 
+     * Open Weather API has a endpoint that accept lng and lat to fetch the weather data too.
+     */
+
+    const getWeather = async () => {
+      let city;
+      try {
+        const { data } = await axios.get('http://ip-api.com/json');
+        city = data.city;
+      } catch {
+        city = 'Sao Paulo' // Sao Paulo will be the default city
+      }
+
+      dispatch(fetchWeather(city));
+    }
+
+    getWeather();
+    // eslint-disable-next-line
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+      <Weather />
   );
 }
 
