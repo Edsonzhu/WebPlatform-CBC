@@ -60,12 +60,12 @@ const weatherSlice = createSlice({
         icon: '13d'
       };
       state.temperature = {
-        atual: 0,
-        feelsLike: 0,
-        min: 0,
-        max: 0
+        actual: -10,
+        feelsLike: -13,
+        min: -20,
+        max: 2
       };
-      state.timestamp = Date.now();
+      state.timestamp = 1624464100;
     })
   },
 });
